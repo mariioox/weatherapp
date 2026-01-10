@@ -12,7 +12,7 @@ function MainLayout() {
       </nav>
 
       {/* Page content */}
-      <main className="flex-1 w-full m-5">
+      <main className="flex-1 m-5">
         <Outlet />
       </main>
 

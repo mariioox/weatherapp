@@ -15,3 +15,8 @@ export type ForecastItem = {
   condition: string;     // "Clouds"
   icon: string;          // API icon code
 };
+
+export type WeatherData = {
+  current: CurrentWeather;
+  forecast: ForecastItem[];
+};

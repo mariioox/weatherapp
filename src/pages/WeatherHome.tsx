@@ -1,6 +1,40 @@
 import ForecastList from "../components/ForecastList";
 import WeatherHero from "../components/WeatherHero";
 import WeatherStats from "../components/WeatherStats";
+import type { WeatherData } from "../types/weather";
+
+const mockWeather: WeatherData = {
+  current: {
+    location: "Lagos, Nigeria",
+    temperature: 28,
+    feelsLike: 30,
+    condition: "Clear",
+    icon: "01d",
+    humidity: 74,
+    windSpeed: 3.6,
+    pressure: 1012,
+  },
+  forecast: [
+    {
+      time: "12 PM",
+      temperature: 30,
+      condition: "Sunny",
+      icon: "01d",
+    },
+    {
+      time: "3 PM",
+      temperature: 29,
+      condition: "Partly Cloudy",
+      icon: "02d",
+    },
+    {
+      time: "6 PM",
+      temperature: 27,
+      condition: "Cloudy",
+      icon: "03d",
+    },
+  ],
+};
 
 function WeatherHome() {
   return (
@@ -12,13 +46,13 @@ function WeatherHome() {
       </section>
 
       {/* Current Weather */}
-      {/* <WeatherHero current={weather.current} /> */}
+      <WeatherHero current={mockWeather.current} />
 
       {/* Stats */}
-      {/* <WeatherStats current={weather.current} /> */}
+      <WeatherStats current={mockWeather.current} />
 
       {/* Forecast */}
-      {/* <ForecastList forecast={weather.forecast} /> */}
+      <ForecastList forecast={mockWeather.forecast} />
     </div>
   );
 }
