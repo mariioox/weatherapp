@@ -1,29 +1,19 @@
-import type { ForecastItem } from "../types/weather";
+import type { OpenWeatherForecastResponse } from "../types/OpenWeatherForecast";
 
 type Props = {
-  forecast: ForecastItem[];
+  forecast: OpenWeatherForecastResponse;
 };
 
 function ForecastList({ forecast }: Props) {
   return (
-    <div className="flex gap-4 overflow-x-auto">
-      {forecast.map((item, index) => (
-        <div
-          key={index}
-          className="min-w-[100px] rounded-lg border p-3 text-center"
-        >
-          <p className="text-sm">{item.time}</p>
-
-          <img
-            src={`https://openweathermap.org/img/wn/${item.icon}.png`}
-            alt={item.condition}
-            className="mx-auto"
-          />
-
-          <p className="font-semibold">{item.temperature}°C</p>
-        </div>
+    <ul className="space-y-2">
+      {forecast.list.slice(0, 5).map((item) => (
+        <li key={item.dt}>
+          <span>{item.dt_txt}</span> <span>{Math.round(item.main.temp)}°C</span>{" "}
+          <span>{item.weather[0].main}</span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
