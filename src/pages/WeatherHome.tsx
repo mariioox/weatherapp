@@ -2,57 +2,63 @@ import ForecastList from "../components/ForecastList";
 import WeatherHero from "../components/WeatherHero";
 import WeatherStats from "../components/WeatherStats";
 import type { WeatherData } from "../types/weather";
-
-const mockWeather: WeatherData = {
-  current: {
-    location: "Lagos, Nigeria",
-    temperature: 28,
-    feelsLike: 30,
-    condition: "Clear",
-    icon: "01d",
-    humidity: 74,
-    windSpeed: 3.6,
-    pressure: 1012,
-  },
-  forecast: [
-    {
-      time: "12 PM",
-      temperature: 30,
-      condition: "Sunny",
-      icon: "01d",
-    },
-    {
-      time: "3 PM",
-      temperature: 29,
-      condition: "Partly Cloudy",
-      icon: "02d",
-    },
-    {
-      time: "6 PM",
-      temperature: 27,
-      condition: "Cloudy",
-      icon: "03d",
-    },
-  ],
-};
+import { useEffect, useState } from "react";
+import CitySearch from "../components/CitySearch";
 
 function WeatherHome() {
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const API_KEY = "YOUR_API_KEY";
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch weather");
+        }
+
+        const data: WeatherData = await response.json();
+        setWeather(data);
+      } catch (err) {
+        console.log(err);
+        setError("Could not load weather data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, [city]);
+
   return (
     <div className="space-y-8">
       {/* Location */}
-      <section>
-        <h2 className="text-xl font-semibold">Lagos, Nigeria</h2>
-        <p className="text-muted-foreground">Monday, Sept 18</p>
-      </section>
+      <CitySearch onSearch={setCity} />
 
-      {/* Current Weather */}
-      <WeatherHero current={mockWeather.current} />
+      {isLoading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
 
-      {/* Stats */}
-      <WeatherStats current={mockWeather.current} />
+      {weather && (
+        <>
+          {/* Current Weather */}
+          <WeatherHero current={weather.current} />
 
-      {/* Forecast */}
-      <ForecastList forecast={mockWeather.forecast} />
+          {/* Stats */}
+          <WeatherStats current={weather.current} />
+
+          {/* Forecast */}
+          <ForecastList forecast={weather.forecast} />
+        </>
+      )}
     </div>
   );
 }
