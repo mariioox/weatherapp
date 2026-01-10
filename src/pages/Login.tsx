@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -51,7 +51,7 @@ function Login() {
       </div>
       <div className="p-4 ml-5">
         <p>
-          Don't have an account? <a href="/signup">Signup</a>
+          Don't have an account? <Link to="/signup">Signup</Link>
         </p>
       </div>
     </div>
