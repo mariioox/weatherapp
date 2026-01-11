@@ -8,6 +8,7 @@ export type OpenWeatherForecastResponse = {
     weather: {
       main: string;
       icon: string;
+      description: string;
     }[];
   }[];
 };

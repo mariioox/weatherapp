@@ -24,4 +24,10 @@ export type OpenWeatherResponse = {
 
   visibility: number;
   dt: number;
-};
+
+  sys: {
+    type: string,
+    id: string,
+    country: string,
+  };
+}

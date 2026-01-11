@@ -14,7 +14,7 @@ function Signup() {
     if (username && password && confirmPassword) {
       // Store in localStorage (or context) that user is authenticated
       localStorage.setItem("isAuthenticated", "true");
-      navigate("/weather");
+      navigate("/login");
     } else if (password != confirmPassword) {
       alert("Password and Confirmation dosen't match");
     } else {

@@ -1,30 +1,3 @@
-// import type { CurrentWeather } from "../types/weather";
-
-// type Props = {
-//   current: CurrentWeather;
-// };
-
-// function WeatherHero({ current }: Props) {
-//   return (
-//     <div className="flex items-center gap-6">
-//       <img
-//         src={`https://openweathermap.org/img/wn/${current.icon}@2x.png`}
-//         alt={current.condition}
-//       />
-
-//       <div>
-//         <h1 className="text-5xl font-bold">{current.temperature}°C</h1>
-
-//         <p className="text-lg text-muted-foreground">{current.condition}</p>
-
-//         <p className="text-sm">Feels like {current.feelsLike}°C</p>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default WeatherHero;
-
 import type { OpenWeatherResponse } from "../types/openWeather";
 
 type Props = {
@@ -32,14 +5,31 @@ type Props = {
 };
 
 function WeatherHero({ weather }: Props) {
+  const condition = weather.weather[0];
+
   return (
-    <div>
-      <h1 className="mr-10">{weather.name}</h1>
-      <img
-        src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-      />
-      <p>{weather.main.temp}°C</p>
-      <p className="text-xl">{weather.weather[0].main}</p>
+    <div className="bg-gradient-to-r from-blue-400 to-sky-200 text-white rounded-xl p-6 shadow-md">
+      <div className="flex items-center justify-between">
+        {/* Left: Location + Condition */}
+        <div className="space-y-1">
+          <h2 className="text-2xl font-semibold">
+            {weather.name}, {weather.sys.country}
+          </h2>
+          <p className="text-lg capitalize">{condition.description}</p>
+        </div>
+
+        {/* Right: Temperature + Icon */}
+        <div className="flex items-center gap-4">
+          <img
+            src={`https://openweathermap.org/img/wn/${condition.icon}@2x.png`}
+            alt={condition.description}
+            className="w-20 h-20"
+          />
+          <span className="text-5xl font-bold">
+            {Math.round(weather.main.temp)}°
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
