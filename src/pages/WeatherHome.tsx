@@ -57,7 +57,7 @@ function WeatherHome() {
   return (
     <div className="space-y-8">
       {/* Location */}
-      <CitySearch onSearch={setCity} />
+      <CitySearch onSearch={setCity} isLoading={isLoading} />
 
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}

@@ -6,9 +6,15 @@ type Props = {
 
 function WeatherHero({ weather }: Props) {
   const condition = weather.weather[0];
+  const gradientClass = () => {
+    if (weather.main.temp > 15) {
+      return "bg-gradient-to-r from-blue-400 to-sky-200";
+    }
+    return "bg-gradient-to-r from-orange-400 to-yellow-200";
+  };
 
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-sky-200 text-white rounded-xl p-6 shadow-md">
+    <div className={`text-white rounded-xl p-6 shadow-md ${gradientClass}`}>
       <div className="flex items-center justify-between">
         {/* Left: Location + Condition */}
         <div className="space-y-1">

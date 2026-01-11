@@ -2,33 +2,33 @@ import { useState } from "react";
 
 type Props = {
   onSearch: (city: string) => void;
+  isLoading?: boolean;
 };
 
-function CitySearch({ onSearch }: Props) {
+function CitySearch({ onSearch, isLoading = false }: Props) {
   const [city, setCity] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!city.trim()) return;
+    const trimmed = city.trim();
+    if (!trimmed || isLoading) return;
 
-    onSearch(city.trim());
+    onSearch(trimmed);
     setCity("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 items-center">
       <input
         className="border p-2 rounded"
         placeholder="Enter city name"
         value={city}
         onChange={(e) => setCity(e.target.value)}
+        disabled={isLoading}
       />
-      <button
-        className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        type="submit"
-      >
-        Search
+      <button disabled={isLoading} className="text-white" type="submit">
+        {isLoading ? "Searching…" : "Search"}
       </button>
     </form>
   );
