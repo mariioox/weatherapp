@@ -11,10 +11,11 @@ function WeatherHome() {
   const [weather, setWeather] = useState<OpenWeatherResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const API_KEY = "b95036906081f2d653626c50a0e0ec51";
   const [forecast, setForecast] = useState<OpenWeatherForecastResponse | null>(
     null
   );
+  const API_KEY = "b95036906081f2d653626c50a0e0ec51";
+  // const API_KEY = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     if (!city) return;
@@ -25,27 +26,23 @@ function WeatherHome() {
 
       try {
         // For Current Weather data
-        const weatherResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-        );
+        const [weatherResponse, forecastResponse] = await Promise.all([
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+          ),
+          fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+          ),
+        ]);
 
-        if (!weatherResponse.ok) {
-          throw new Error("Failed to fetch weather");
+        if (!weatherResponse.ok || !forecastResponse.ok) {
+          throw new Error("Failed to fetch weather data");
         }
 
         const weatherData = await weatherResponse.json();
-        setWeather(weatherData);
-
-        // For Forecast data
-        const forecastResponse = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
-        );
-
-        if (!forecastResponse.ok) {
-          throw new Error("Failed to fetch forecast");
-        }
-
         const forecastData = await forecastResponse.json();
+
+        setWeather(weatherData);
         setForecast(forecastData);
       } catch (err) {
         console.log(err);
