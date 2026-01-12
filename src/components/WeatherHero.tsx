@@ -8,8 +8,8 @@ function WeatherHero({ weather }: Props) {
   const condition = weather.weather[0];
   const gradientClass =
     Math.round(weather.main.temp) < 15
-      ? "bg-gradient-to-r from-blue-400 to-sky-200"
-      : "bg-gradient-to-r from-orange-400 to-yellow-200";
+      ? "bg-gradient-to-r from-blue-600 to-sky-300"
+      : "bg-gradient-to-r from-orange-500 to-yellow-300";
 
   return (
     <div className={`text-white rounded-xl p-6 shadow-md ${gradientClass}`}>
