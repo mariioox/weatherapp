@@ -6,6 +6,8 @@ import WeatherHero from "../components/WeatherHero";
 import CitySearch from "../components/CitySearch";
 import { useEffect, useState } from "react";
 
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 function WeatherHome() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<OpenWeatherResponse | null>(null);
@@ -14,8 +16,6 @@ function WeatherHome() {
   const [forecast, setForecast] = useState<OpenWeatherForecastResponse | null>(
     null,
   );
-  const API_KEY = "b95036906081f2d653626c50a0e0ec51";
-  // const API_KEY = process.env.REACT_APP_API_KEY;
 
   useEffect(() => {
     if (!city) return;

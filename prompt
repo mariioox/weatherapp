@@ -1,0 +1,177 @@
+this is my current CitySearch.tsx;
+import { useEffect, useState } from "react";
+
+type Props = {
+  onSearch: (city: string) => void;
+  isLoading?: boolean;
+};
+
+type LocationOption = {
+  name: string;
+  country: string;
+  state?: string;
+};
+
+function CitySearch({ onSearch, isLoading = false }: Props) {
+  const [query, setQuery] = useState("");
+  const [options, setOptions] = useState<LocationOption[]>([]);
+
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+  // Fetch location suggestions while typing
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setOptions([]);
+      return;
+    }
+
+    const fetchSuggestions = async () => {
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`,
+        );
+
+        if (!res.ok) return;
+
+        const data: LocationOption[] = await res.json();
+        setOptions(data);
+      } catch {
+        setOptions([]);
+      }
+    };
+
+    fetchSuggestions();
+  }, [query]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const trimmed = query.trim();
+    if (!trimmed || isLoading) return;
+
+    onSearch(trimmed);
+    setQuery("");
+    setOptions([]);
+  };
+
+  return (
+    <div className="relative w-full max-w-sm">
+      <form onSubmit={handleSubmit} className="flex gap-2 items-center">
+        <input
+          className="border p-2 rounded w-full"
+          placeholder="Enter city name"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          disabled={isLoading}
+        />
+        <button disabled={isLoading} type="submit">
+          {isLoading ? "Searching…" : "Search"}
+        </button>
+      </form>
+
+      {options.length > 0 && (
+        <ul className="absolute z-10 mt-1 w-full bg-white border rounded shadow">
+          {options.map((opt, index) => {
+            const label = opt.state
+              ? `${opt.name}, ${opt.state}, ${opt.country}`
+              : `${opt.name}, ${opt.country}`;
+
+            return (
+              <li
+                key={`${opt.name}-${index}`}
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => {
+                  onSearch(label);
+                  setQuery("");
+                  setOptions([]);
+                }}
+              >
+                {label}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default CitySearch;
+
+and this is WeatherHome.tsx;
+import type { OpenWeatherForecastResponse } from "../types/OpenWeatherForecast";
+import type { OpenWeatherResponse } from "../types/openWeather";
+import WeatherStats from "../components/WeatherStats";
+import ForecastList from "../components/ForecastList";
+import WeatherHero from "../components/WeatherHero";
+import CitySearch from "../components/CitySearch";
+import { useEffect, useState } from "react";
+
+function WeatherHome() {
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState<OpenWeatherResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [forecast, setForecast] = useState<OpenWeatherForecastResponse | null>(
+    null,
+  );
+
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+  useEffect(() => {
+    if (!city) return;
+
+    const fetchWeather = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // For Current Weather data
+        const [weatherResponse, forecastResponse] = await Promise.all([
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
+          ),
+          fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`,
+          ),
+        ]);
+
+        if (!weatherResponse.ok || !forecastResponse.ok) {
+          throw new Error("Failed to fetch weather data");
+        }
+
+        const weatherData = await weatherResponse.json();
+        const forecastData = await forecastResponse.json();
+
+        setWeather(weatherData);
+        setForecast(forecastData);
+      } catch (err) {
+        console.log(err);
+        setError("Could not load weather data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchWeather();
+  }, [city]);
+
+  return (
+    <div className="space-y-8">
+      <CitySearch onSearch={setCity} isLoading={isLoading} />
+
+      {isLoading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
+      {!isLoading && weather && forecast && (
+        <>
+          <WeatherHero weather={weather} />
+          <WeatherStats weather={weather} />
+          <ForecastList forecast={forecast} />
+        </>
+      )}
+    </div>
+  );
+}
+
+export default WeatherHome;
+and it keeps throwing React Hook useEffect has a missing dependency: 'API_KEY'. Either include it or remove the dependency array.

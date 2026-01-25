@@ -11,11 +11,11 @@ type LocationOption = {
   state?: string;
 };
 
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 function CitySearch({ onSearch, isLoading = false }: Props) {
   const [query, setQuery] = useState("");
   const [options, setOptions] = useState<LocationOption[]>([]);
-
-  const API_KEY = "b95036906081f2d653626c50a0e0ec51";
 
   // Fetch location suggestions while typing
   useEffect(() => {
