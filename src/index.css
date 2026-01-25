@@ -7,7 +7,7 @@
 
   color-scheme: light dark;
   color: rgba(61, 61, 61, 0.87);
-  background-color: #fafefff3;
+  background-color: #edf7faf3;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,6 +40,7 @@ button {
   border-radius: 8px;
   border: 2px solid transparent;
   padding: 0.6em 1.2em;
+  color: rgb(228, 229, 235);
   background-color: #1b1c1d;
   cursor: pointer;
   transition: border-color 0.25s;
