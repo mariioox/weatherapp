@@ -57,7 +57,6 @@ function WeatherHome() {
   return (
     <div className="space-y-8">
       <CitySearch onSearch={setCity} isLoading={isLoading} />
-      <h1>hello</h1>
 
       {isLoading && <p className="text-xl">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
