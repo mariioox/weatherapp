@@ -6,6 +6,8 @@ type Props = {
 
 function WeatherHero({ weather }: Props) {
   const condition = weather.weather[0];
+
+  // Changes gradient bg according to temp.
   const gradientClass =
     Math.round(weather.main.temp) < 15
       ? "bg-gradient-to-r from-blue-600 to-sky-300"

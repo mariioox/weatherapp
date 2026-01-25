@@ -12,7 +12,7 @@ function WeatherHome() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [forecast, setForecast] = useState<OpenWeatherForecastResponse | null>(
-    null
+    null,
   );
   const API_KEY = "b95036906081f2d653626c50a0e0ec51";
   // const API_KEY = process.env.REACT_APP_API_KEY;
@@ -28,10 +28,10 @@ function WeatherHome() {
         // For Current Weather data
         const [weatherResponse, forecastResponse] = await Promise.all([
           fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`,
           ),
           fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`,
           ),
         ]);
 
@@ -56,7 +56,6 @@ function WeatherHome() {
 
   return (
     <div className="space-y-8">
-      {/* Location */}
       <CitySearch onSearch={setCity} isLoading={isLoading} />
 
       {isLoading && <p>Loading...</p>}
