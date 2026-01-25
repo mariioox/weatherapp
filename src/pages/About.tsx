@@ -40,7 +40,7 @@ function About() {
         <li>React</li>
         <li>TypeScript</li>
         <li>OpenWeather API</li>
-        <li>CSS utility classes for styling</li>
+        <li>CSS utility classes for styling(Tailwind)</li>
       </ul>
 
       <h2 className="text-xl font-semibold">What I Learned</h2>
