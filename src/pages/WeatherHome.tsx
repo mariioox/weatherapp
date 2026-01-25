@@ -58,7 +58,7 @@ function WeatherHome() {
     <div className="space-y-8">
       <CitySearch onSearch={setCity} isLoading={isLoading} />
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p className="text-xl">Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       {!isLoading && weather && forecast && (
